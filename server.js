@@ -1,7 +1,8 @@
 const express = require('express')
 const path = require('path')
-const { readFromFile, readAndAppend } = require('./helpers/fsUtils');
+const { readFromFile, readAndAppend, readAndRemove } = require('./helpers/fsUtils');
 const uuid = require('./helpers/uuid');
+const fs = require('fs');
 
 const PORT = process.env.PORT || 3001;
 const app = express()
@@ -46,21 +47,12 @@ app.post('/api/notes', (req, res) => {
     res.status(201).json(response);
 })
 
-app.listen(PORT, () =>
-  console.log(`App listening at http://localhost:${PORT} 🚀`)
-);
-
-// extra credit will work on that later
 app.delete('/api/notes/:id', (req,res) => {
 
     console.info(`${req.method} request received to delete a note`)
-
-    // let keys = Object.keys(notes)
-    // for(let i = 0; i<keys.length; i++){
-    //     if(keys[i] == id){
-    //         index = notes.indexOf(i)
-    //         notes.splice(index,1)
-    //     }
-
-    // }
+    readAndRemove(req.params.id,'./db/db.json')
 })
+
+app.listen(PORT, () =>
+  console.log(`App listening at http://localhost:${PORT} 🚀`)
+);
