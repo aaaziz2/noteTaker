@@ -1,7 +1,12 @@
 [
     {
-        "title": "This is my first note",
-        "id": "db98",
-        "text": "this is the text"
+        "title": "New note",
+        "id": "c0fa",
+        "text": "2"
+    },
+    {
+        "title": "New ",
+        "id": "bde5",
+        "text": "test"
     }
 ]

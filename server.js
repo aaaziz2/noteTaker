@@ -1,16 +1,15 @@
 const express = require('express')
 const path = require('path')
-const { readFromFile, readAndAppend, readAndRemove } = require('./helpers/fsUtils');
+const { readAndAppend, readAndRemove } = require('./helpers/fsUtils');
 const uuid = require('./helpers/uuid');
 const fs = require('fs');
 
 const PORT = process.env.PORT || 3001;
 const app = express()
-const notes = require('./db/db.json')
+let dbNotes = require('./db/db.json')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-
 app.use(express.static('public'))
 
 app.get('/', (req, res) =>
@@ -22,7 +21,12 @@ app.get('/notes', (req, res) =>
 )
 
 app.get('/api/notes', (req, res) => {
-    res.status(200).json(notes);
+    try{
+      res.status(200).json(dbNotes)
+    }catch(e)
+    {
+      console.log(e)
+    }
 })
 
 app.post('/api/notes', (req, res) => {
@@ -51,6 +55,7 @@ app.delete('/api/notes/:id', (req,res) => {
 
     console.info(`${req.method} request received to delete a note`)
     readAndRemove(req.params.id,'./db/db.json')
+    res.json(true)
 })
 
 app.listen(PORT, () =>

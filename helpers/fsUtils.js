@@ -20,7 +20,7 @@ const writeToFile = (destination, content) =>
  *  @returns {void} Nothing
  */
 const readAndAppend = (content, file) => {
-  fs.readFile(file, 'utf8', (err, data) => {
+  readFromFile(file, 'utf8', (err, data) => {
     if (err) {
       console.error(err);
     } else {
@@ -32,16 +32,20 @@ const readAndAppend = (content, file) => {
 };
 
 const readAndRemove = (content, file) => {
-  fs.readFile(file, 'utf8', (err, data) => {
+  readFromFile(file, 'utf8', (err, data) => {
     if (err) {
       console.error(err);
     } else {
-      const parsedData = JSON.parse(data);
-      let obj = parsedData.find((note, i) => {
+      let parsedData = JSON.parse(data);
+      let obj
+      console.log(parsedData)
+      parsedData.find((note, i) => {
         if(note.id == content){
-          parsedData.splice(i,1)
+          obj = i
         }
       })
+      parsedData.splice(obj,1)
+      console.log(parsedData)
       writeToFile(file, parsedData);
     }
   });
