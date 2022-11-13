@@ -8,6 +8,8 @@ const PORT = process.env.PORT || 3001;
 const app = express()
 let dbNotes = require('./db/db.json')
 
+// let noteArray = JSON.parse(dbNotes)
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
@@ -21,12 +23,7 @@ app.get('/notes', (req, res) =>
 )
 
 app.get('/api/notes', (req, res) => {
-    try{
-      res.status(200).json(dbNotes)
-    }catch(e)
-    {
-      console.log(e)
-    }
+    res.status(200).json(dbNotes)
 })
 
 app.post('/api/notes', (req, res) => {
@@ -39,11 +36,13 @@ app.post('/api/notes', (req, res) => {
     text: req.body.text,
     };
       
-    readAndAppend(newNotes, './db/db.json')
+    // readAndAppend(newNotes, './db/db.json')
+
+    dbNotes.push(newNotes)
 
     const response = {
         status: 'success',
-        body: req.body,
+        body: newNotes,
       };
      
     console.log(req.body)
@@ -54,7 +53,15 @@ app.post('/api/notes', (req, res) => {
 app.delete('/api/notes/:id', (req,res) => {
 
     console.info(`${req.method} request received to delete a note`)
-    readAndRemove(req.params.id,'./db/db.json')
+    // readAndRemove(req.params.id,'./db/db.json')
+
+    dbNotes.find((note, i) => {
+      if(note.id == req.params.id){
+        obj = i
+      }
+    })
+    dbNotes.splice(obj,1)
+
     res.json(true)
 })
 
