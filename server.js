@@ -1,6 +1,5 @@
 const express = require('express')
 const path = require('path')
-const { readAndAppend, readAndRemove } = require('./helpers/fsUtils');
 const uuid = require('./helpers/uuid');
 const fs = require('fs');
 
@@ -35,8 +34,6 @@ app.post('/api/notes', (req, res) => {
     id: uuid(),
     text: req.body.text,
     };
-      
-    // readAndAppend(newNotes, './db/db.json')
 
     dbNotes.push(newNotes)
 
@@ -44,8 +41,6 @@ app.post('/api/notes', (req, res) => {
         status: 'success',
         body: newNotes,
       };
-     
-    console.log(req.body)
       
     res.status(201).json(response);
 })
@@ -53,7 +48,6 @@ app.post('/api/notes', (req, res) => {
 app.delete('/api/notes/:id', (req,res) => {
 
     console.info(`${req.method} request received to delete a note`)
-    // readAndRemove(req.params.id,'./db/db.json')
 
     dbNotes.find((note, i) => {
       if(note.id == req.params.id){
