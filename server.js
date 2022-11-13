@@ -37,6 +37,11 @@ app.post('/api/notes', (req, res) => {
 
     dbNotes.push(newNotes)
 
+    fs.writeFileSync(
+      path.join(__dirname, './db/db.json'),
+      JSON.stringify(dbNotes, null, 2)
+    )
+
     const response = {
         status: 'success',
         body: newNotes,
@@ -55,6 +60,11 @@ app.delete('/api/notes/:id', (req,res) => {
       }
     })
     dbNotes.splice(obj,1)
+
+    fs.writeFileSync(
+      path.join(__dirname, './db/db.json'),
+      JSON.stringify(dbNotes, null, 2)
+    )
 
     res.json(true)
 })
